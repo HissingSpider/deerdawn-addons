@@ -1,0 +1,26 @@
+{
+  "format": 1,
+  "note": "Ids no listing may take. Kept in step with apps/api/src/addons/reservedIds.js in DeerDawn.",
+  "ids": [
+    "wardrobe",
+    "notes-example",
+    "second-brain",
+    "marketplace",
+    "browse",
+    "installed",
+    "view",
+    "new",
+    "settings",
+    "index",
+    "install",
+    "packages",
+    "brief-lines",
+    "upload",
+    "catalog",
+    "deerdawn",
+    "official",
+    "admin",
+    "system",
+    "help"
+  ]
+}
