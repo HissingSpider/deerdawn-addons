@@ -1,0 +1,21 @@
+{
+  "id": "reading-list",
+  "name": "Reading list",
+  "version": "1.0.0",
+  "description": "Books and articles you want to read, are reading, or have finished, with a rating and notes on each. Your AI adds them as they come up and finds them again.",
+  "license": "MIT",
+  "author": "DeerDawn",
+  "homepage": "https://deerdawn.com",
+  "platform": 2,
+  "kind": "declarative",
+  "collections": {
+    "items": { "schema": "schemas/item.json" }
+  },
+  "skill": "SKILL.md",
+  "brief_line": "Reading list: {{items.count}} items",
+  "views": [
+    { "id": "all", "type": "table", "collection": "items", "title": "Everything", "fields": ["title", "author", "kind", "status", "rating", "tags"], "title_field": "title" },
+    { "id": "detail", "type": "detail", "collection": "items", "fields": ["title", "author", "kind", "url", "status", "rating", "started_on", "finished_on", "notes", "tags"] }
+  ],
+  "default_visibility": "personal"
+}

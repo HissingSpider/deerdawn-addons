@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://deerdawn.com/schemas/addon-manifest.json",
+  "title": "DeerDawn add-on manifest (addon.json)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "version", "kind", "collections"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,39}$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.-]+)?$" },
+    "description": { "type": "string", "maxLength": 500 },
+    "license": { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[A-Za-z0-9][A-Za-z0-9.+-]*$" },
+    "author": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "homepage": { "type": "string", "maxLength": 300, "pattern": "^https://" },
+    "platform": { "type": "integer", "minimum": 1, "maximum": 1000 },
+    "kind": { "enum": ["declarative", "server"] },
+    "collections": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]{0,39}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["schema"],
+        "properties": {
+          "schema": { "type": "string", "minLength": 1 },
+          "attachments": { "type": "boolean" }
+        }
+      }
+    },
+    "skill": { "type": "string", "minLength": 1 },
+    "brief_line": { "type": "string", "maxLength": 160 },
+    "views": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "collection"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]{0,39}$" },
+          "type": { "enum": ["gallery", "table", "detail"] },
+          "collection": { "type": "string" },
+          "title": { "type": "string" },
+          "fields": { "type": "array", "items": { "type": "string" } },
+          "title_field": { "type": "string" }
+        }
+      }
+    },
+    "default_visibility": { "enum": ["personal"] }
+  }
+}

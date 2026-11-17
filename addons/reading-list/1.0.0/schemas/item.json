@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Reading list item",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "status"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "maxLength": 300, "description": "Title of the book or article." },
+    "author": { "type": "string", "maxLength": 200, "description": "Author, or authors separated by commas." },
+    "kind": { "type": "string", "enum": ["book", "article", "paper", "other"], "description": "What it is." },
+    "url": { "type": "string", "maxLength": 2000, "description": "Where to find it, when the person gave a link." },
+    "status": { "type": "string", "enum": ["want", "reading", "done"], "description": "want: on the list. reading: started. done: finished." },
+    "rating": { "type": "integer", "minimum": 1, "maximum": 5, "description": "1 to 5, only once the person has said what they thought." },
+    "started_on": { "type": "string", "maxLength": 10, "description": "YYYY-MM-DD." },
+    "finished_on": { "type": "string", "maxLength": 10, "description": "YYYY-MM-DD." },
+    "notes": { "type": "string", "maxLength": 5000, "description": "The person's own notes and quotes." },
+    "tags": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 40 }, "maxItems": 20 }
+  }
+}
