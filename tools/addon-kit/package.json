@@ -1,0 +1,8 @@
+{
+  "name": "@deerdawn/addon-kit",
+  "version": "0.2.0",
+  "private": true,
+  "license": "MIT",
+  "description": "Vendored copy of @deerdawn/addon-kit 0.2.0 (DeerDawn commit 16920c7891a928d0ad8562c2b015d0401899ca44). Its dependencies come from tools/package.json.",
+  "main": "src/index.js"
+}

@@ -1,0 +1,58 @@
+# Check a pull request against the registry's rules (tools/check.js).
+#
+# Runs with a read-only token and no secrets, so a pull request from a fork
+# gets the same checks and can reach nothing. The checks run with the tools
+# from the BASE branch: a pull request that edits tools/ cannot loosen the
+# rules it is judged by (its own tools still have to pass their tests).
+
+name: Check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check listings
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Install tools
+        working-directory: tools
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Tools tests
+        working-directory: tools
+        run: npm test
+
+      # HEAD is the merge of the pull request into its base, so HEAD^1 is
+      # exactly the base it is compared with.
+      - name: Check listings
+        env:
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          base="$(git rev-parse HEAD^1)"
+          checker="tools/check.js"
+          if git cat-file -e "$base:tools/check.js" 2>/dev/null; then
+            mkdir -p "$RUNNER_TEMP/base"
+            git archive "$base" tools | tar -x -C "$RUNNER_TEMP/base"
+            (cd "$RUNNER_TEMP/base/tools" && npm ci --ignore-scripts --no-audit --no-fund)
+            checker="$RUNNER_TEMP/base/tools/check.js"
+          else
+            echo "::notice::The base branch has no tools/check.js yet; checking with this pull request's own tools."
+          fi
+          node "$checker" --repo "$GITHUB_WORKSPACE" --base "$base" --author "$PR_AUTHOR"
